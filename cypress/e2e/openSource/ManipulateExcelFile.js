@@ -6,11 +6,13 @@ async function writeExcel(firstName,lastName,replaceText,change,filePath)
   await workbook.xlsx.readFile(filePath);
   const worksheet = workbook.getWorksheet('Sheet1');
   const output = await readExcel(worksheet,firstName,lastName);
+  // Adding change object to navigate to desiredCell
   const cell = worksheet.getCell(output.row+change.rowChange,output.column+change.colChange);
   cell.value = replaceText;
   await workbook.xlsx.writeFile(filePath);
 }
  
+// To readDate from excelFile
 async function readExcel(worksheet,firstName,lastName)
 {
     let output = {row:-1,column:-1};
@@ -19,11 +21,11 @@ async function readExcel(worksheet,firstName,lastName)
         row.eachCell((cell,colNumber) =>
         {
             // To log each Cell Value
-            if(rowNumber == 8)
-                console.log(cell.value)
+            console.log(cell.value)
             // Get row and column number of searchedPerson
             if(cell.value === firstName && worksheet.getCell(rowNumber, colNumber+1).value === lastName)
             {
+                // Get row and column Number of searchedPerson
                 output.row=rowNumber;
                 output.column=colNumber;
                 console.log(`RowNo ${rowNumber}`)
